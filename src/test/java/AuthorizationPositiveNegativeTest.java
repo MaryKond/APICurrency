@@ -1,15 +1,10 @@
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-
-import java.net.URL;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
-public class AuthorizationPositiveTest {
+public class AuthorizationPositiveNegativeTest {
     @Test
     public void validTokenTest(){
         Response response=given().auth().oauth2(Consts.TOKEN).contentType("application/json").get(Consts.URL+Consts.TOKEN);
