@@ -34,7 +34,7 @@ public void incorrectDateSent(){
     System.out.println(response.asString());
    String errorInfo = response.jsonPath().getString("error.info");
     if (errorInfo != null ) {
-        assertTrue(errorInfo.contains("blsa "),"error message is missing");
+        assertTrue(errorInfo.contains("You have entered an invalid date"),"error message is missing");
         //System.out.println("You have entered an invalid date. Required format: date=YYYY-MM-DD");
     }
     response.then().body("success", equalTo(true));
