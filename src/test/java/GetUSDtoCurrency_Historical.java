@@ -24,7 +24,39 @@ public class GetUSDtoCurrency_Historical {
     private static Response response;
     private static String date;
 
+@Test
+public void incorrectDateSent(){
+//_____________________________________________________________________________________________
+    //CHECKING IF THE REQUESTED DATE IS CORRECT
+    date="date=1999-12-41&";
+    response=given().auth().oauth2(Consts.TOKEN).contentType("application/json").get(Consts.URL_HISTORICAL+date+Consts.TOKEN+Consts.USD_CAD);
+    response.then().statusCode(200);
+    System.out.println(response.asString());
+   String errorInfo = response.jsonPath().getString("error.info");
+    if (errorInfo != null ) {
+        assertTrue(errorInfo.contains("blsa "),"error message is missing");
+        //System.out.println("You have entered an invalid date. Required format: date=YYYY-MM-DD");
+    }
+    response.then().body("success", equalTo(true));
 
+//_____________________________________________________________________________________________
+    //VALIDATING RECEIVED DATE
+    long timestamp = response.jsonPath().getLong("timestamp");
+
+    // Convert epoch timestamp to human-readable date
+    String actualDate = convertEpochToDate(timestamp);
+
+    // Expected date in the response (based on the input date)
+    String expectedDate = "2018-01-01";
+
+    // Print and compare the dates
+    System.out.println("Actual date: " + actualDate);
+    System.out.println("Expected date: " + expectedDate);
+
+    // Verify that the actual date matches the expected date
+    assertEquals(expectedDate, actualDate, "The dates do not match.");
+
+}
     @ParameterizedTest
     @ValueSource(strings = {Consts.USD_EUR,Consts.USD_CAD,Consts.USD_RUB,Consts.USD_NIS})
     void getRateHistorical(String str) {
